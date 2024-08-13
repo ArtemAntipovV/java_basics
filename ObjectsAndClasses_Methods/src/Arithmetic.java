@@ -2,11 +2,9 @@ public class Arithmetic {
 
      private int firstNumber;
      private int secondNumber;
-     int sum;
-     int multiNumber;
 
 
-    public Arithmetic( int firstNumber, int secondNumber) {
+    public Arithmetic(int firstNumber, int secondNumber) {
             this.firstNumber = firstNumber;
             this.secondNumber = secondNumber;
         }
@@ -18,9 +16,13 @@ public class Arithmetic {
         return firstNumber * secondNumber;
     }
 
+    public  static int max(int firstNumber, int secondNumber) {
+            if(firstNumber >= secondNumber) {
+                return;
+            }
 
+        int sum;
+        int multiNumber;
+        int max;
 
-
-
-
- }
+    }
