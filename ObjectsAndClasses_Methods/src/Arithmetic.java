@@ -18,7 +18,9 @@ public class Arithmetic {
 
     public  static int max(int firstNumber, int secondNumber) {
             if(firstNumber >= secondNumber) {
-                return;
+                return firstNumber;
+            } else if(firstNumber <= secondNumber) {
+                return secondNumber;
             }
 
         int sum;
