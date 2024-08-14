@@ -1,30 +1,36 @@
+
 public class Arithmetic {
 
-     private int firstNumber;
-     private int secondNumber;
+    int a;
+    int b;
 
 
-    public Arithmetic(int firstNumber, int secondNumber) {
-            this.firstNumber = firstNumber;
-            this.secondNumber = secondNumber;
+    public Arithmetic(int a, int b) {
+        this.a = a;
+        this.b = b;
+    }
+
+    public int sum() {
+       return a + b;
+    }
+
+    public int multiNumber() {
+       return a * b;
+    }
+
+    public int max() {
+        if (a >= b) {
+          return a;
         }
-    public static int sum(int firstNumber,int SecondNumber){
-        return firstNumber + SecondNumber;
+        return b;
     }
 
-    public  static int multiNumber (int firstNumber, int secondNumber) {
-        return firstNumber * secondNumber;
-    }
 
-    public  static int max(int firstNumber, int secondNumber) {
-            if(firstNumber >= secondNumber) {
-                return firstNumber;
-            } else if(firstNumber <= secondNumber) {
-                return secondNumber;
-            }
 
-        int sum;
-        int multiNumber;
-        int max;
+}
 
-    }
+
+
+
+
+
