@@ -11,20 +11,25 @@ public class Arithmetic {
     }
 
     public int sum() {
-       return a + b;
+        return a + b;
     }
 
     public int multiNumber() {
-       return a * b;
+        return a * b;
     }
 
-    public int max() {
-        if (a >= b) {
-          return a;
+    public int maximalNumber() {
+        if (a > b) {
+            return a;
         }
         return b;
     }
-
+    public int minimalNumber() {
+        if (a > b) {
+            return b;
+        }
+        return a;
+    }
 
 
 }
