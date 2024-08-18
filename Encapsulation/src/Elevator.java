@@ -48,16 +48,7 @@ public class Elevator {
 
 
 
-//        if (currentFloor == maxFloor) {
-//           return;
-//        }
-//        floor = floor + 1;
-//        System.out.println("Лифт перемещается на этаж " + floor);
-//        if (currentFloor == minFloor) {
-//            return;
-//        }
-//        floor = floor - 1;
-//        System.out.println("Лифт перемещается на этаж " + floor);
+
     }
 
 
