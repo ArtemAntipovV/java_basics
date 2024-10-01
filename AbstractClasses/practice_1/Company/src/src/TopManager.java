@@ -2,24 +2,24 @@ package Company.src.src;
 
 public class TopManager  implements Employee {
 
-    public int monthSalary = 150_000; // фикс
-    public double commission = 2.50;  // бонуса в виде 150% от заработной платы, если доход компании более 10 млн рублей.
+    public int MONTH_SALARY = 150_000; // фикс
+    public double COMISSION = 2.50;  // бонуса в виде 150% от заработной платы, если доход компании более 10 млн рублей.
     private int salary;
     private final int incomeTop;
 
     public TopManager(Company company) {
-        this.salary = getMonthSalary();
+        this.salary = getMONTH_SALARY();
         incomeTop = company.getIncome();
 
     }
 
 
     @Override
-    public int getMonthSalary() {
+    public int getMONTH_SALARY() {
         if (incomeTop > 10_000_000) {
-            salary = (int) (monthSalary + (incomeTop * commission));
+            salary = (int) (MONTH_SALARY + (incomeTop * COMISSION));
         } else {
-            return  monthSalary;
+            return MONTH_SALARY;
         }
         return salary;
     }

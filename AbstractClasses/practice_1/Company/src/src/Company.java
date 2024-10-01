@@ -4,18 +4,18 @@ import java.util.*;
 
 public class Company  {
 
-    private final ArrayList<Employee> EMPLOYEES_LIST = new ArrayList<>();
+    private final ArrayList<Employee> employeeArrayList = new ArrayList<>();
 
-    protected int income; //доход компании
-    protected double salary;
-    protected int employee;
+    private int income; //доход компании
+    private double salary;
+    private int employee;
 
 
     public Company() {
     }
 
     public void hire(Employee employee) { //найм одного сотрудника — hire(Employee employee),
-        EMPLOYEES_LIST.add(employee);
+        employeeArrayList.add(employee);
         if (employee instanceof Manager) {
             income +=((Manager) employee).getIncomeForCompany();
         }
@@ -27,20 +27,20 @@ public class Company  {
     }
 
     public void fire(Employee employee) {
-        this.EMPLOYEES_LIST.remove(employee);
+        this.employeeArrayList.remove(employee);
     }
 
     public List<Employee> getTopSalaryStaff(int count) {
-        return getFilteredLimitedList(count, (o1, o2) -> o2.getMonthSalary() - o1.getMonthSalary());
+        return getFilteredLimitedList(count, (o1, o2) -> o2.getMONTH_SALARY() - o1.getMONTH_SALARY());
 
     }
 
     public List<Employee> getLowerSalaryStaff(int count) {
-        return getFilteredLimitedList(count, (o1, o2) -> o1.getMonthSalary() - o2.getMonthSalary());
+        return getFilteredLimitedList(count, (o1, o2) -> o1.getMONTH_SALARY() - o2.getMONTH_SALARY());
     }
 
     private List<Employee> getFilteredLimitedList(int count, Comparator<Employee> comparator) {
-        List<Employee> copyList = new ArrayList<>(EMPLOYEES_LIST);
+        List<Employee> copyList = new ArrayList<>(employeeArrayList);
         Collections.sort(copyList, comparator);
         List<Employee> result = new ArrayList<>();
         for (int i = 0; i < count; i++) result.add(copyList.get(i));
@@ -48,11 +48,11 @@ public class Company  {
     }
 
     public int countEmployeesList() {
-        return EMPLOYEES_LIST.size();
+        return employeeArrayList.size();
     }
 
     public ArrayList<Employee> getEMPLOYEES_LIST() {
-        return EMPLOYEES_LIST;
+        return employeeArrayList;
     }
 
     public int getIncome() {
