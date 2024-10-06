@@ -50,6 +50,6 @@ public class PushNotification implements Notification {
     public String toString() {
         return "PUSH" + "\n" + "title: " + pushTitle + "\n"
                 + "receiver: " + pushReceivers + "\n"
-                + "message: " + "\ud83d\udc4b" + pushMessage;
+                + "message: " + "\ud83d\udc4b " + pushMessage;
     }
 }

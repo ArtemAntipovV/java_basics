@@ -1,7 +1,9 @@
 package ru.skillbox.notification;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class EmailNotification implements Notification{
 
@@ -43,7 +45,7 @@ public class EmailNotification implements Notification{
     @Override
     public String toString() {
         return "EMAIL" + "\n" + "subject: " + getSubject()
-                + "\n" + "receivers: " + getReceivers() + "\n"
+                + "\n" + "receivers: " + getReceivers().stream().collect(Collectors.joining(", ")) + "\n"
                 + "message: " + "<p>" + getEmailMessage() + "<p>";
     }
 }

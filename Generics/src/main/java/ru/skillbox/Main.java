@@ -3,6 +3,7 @@ package ru.skillbox;
 import ru.skillbox.notification.EmailNotification;
 import ru.skillbox.notification.PushNotification;
 import ru.skillbox.notification.SmsNotification;
+import ru.skillbox.notification_sender.EmailNotificationSender;
 
 public class Main {
     public static void main(String[] args) {
@@ -11,6 +12,7 @@ public class Main {
         email.setSubject("Успешная регистрация!");
         email.setEmailMessage("Спасибо за регистрацию на сервисе!");
         email.addReceiver("mail@mail.ru");
+        email.addReceiver("email@email.ru");
         System.out.println(email.toString());
 
         SmsNotification sms = new SmsNotification();
@@ -22,6 +24,6 @@ public class Main {
         push.setPushTitle("Успешная регистрация!");
         push.setPushReceivers("o.yanovich");
         push.setPushMessage("Спасибо за регистрацию на сервисе!");
-
+        System.out.println(push.toString());
     }
 }
