@@ -7,11 +7,13 @@ import java.util.List;
 public class PushNotificationSender implements NotificationSender {
     @Override
     public void send(Notification notification) {
-
+        notification.formattedMessage();
     }
 
     @Override
     public void send(List notifications) {
-
+        for (Object notification : notifications) {
+            send((List) notification);
+        }
     }
 }
