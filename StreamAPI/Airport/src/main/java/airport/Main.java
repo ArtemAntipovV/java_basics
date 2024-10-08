@@ -3,20 +3,22 @@ package airport;
 import com.skillbox.airport.Airport;
 import com.skillbox.airport.Flight;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Stream;
 
 public class Main {
 
     public static long findCountAircraftWithModelAirbus(Airport airport, String model) {
         //TODO Метод должен вернуть количество самолетов указанной модели.
         // подходят те самолеты, у которых name начинается со строки model
-        return 0;
+        return airport.getAllAircrafts().stream()
+                .filter(a -> a.getModel().startsWith(model))
+        .count();
     }
 
     public static Map<String, Integer> findMapCountParkedAircraftByTerminalName(Airport airport) {
+
+
         //TODO Метод должен вернуть словарь с количеством припаркованных самолетов в каждом терминале.
         return Collections.emptyMap();
     }
