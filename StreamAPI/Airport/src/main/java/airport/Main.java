@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 public class Main {
 
     public static long findCountAircraftWithModelAirbus(Airport airport, String model) {
-
         return airport.getAllAircrafts().stream()
                 .filter(a -> a.getModel().startsWith(model))
                 .count();
