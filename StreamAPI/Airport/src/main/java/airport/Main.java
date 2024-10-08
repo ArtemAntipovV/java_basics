@@ -5,11 +5,10 @@ import com.skillbox.airport.Flight;
 import com.skillbox.airport.Terminal;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
+
 
 public class Main {
 
@@ -31,19 +30,27 @@ public class Main {
     public static List<Flight> findFlightsLeavingInTheNextHours(Airport airport, int hours) {
         //TODO Метод должен вернуть список отправляющихся рейсов в ближайшее количество часов.
 
-        Instant dateNow = Instant.now();
-        Instant datePlusHours = dateNow.plus(hours, ChronoUnit.HOURS);
+        Instant departureNow = Instant.now();
+        Instant datePlusHours = departureNow.plus(hours, ChronoUnit.HOURS);
 
         return airport.getTerminals().stream()
                 .flatMap(a -> a.getFlights().stream())
                         .filter(x -> x.getType() == Flight.Type.DEPARTURE)
                         .filter(y -> y.getDate().isBefore(datePlusHours)
-                        && y.getDate().isAfter(dateNow))
+                        && y.getDate().isAfter(departureNow))
                         .collect(Collectors.toList());
     }
 
     public static Optional<Flight> findFirstFlightArriveToTerminal(Airport airport, String terminalName) {
         //TODO Найти ближайший прилет в указанный терминал.
-        return Optional.empty();
+                Instant arriveNow = Instant.now();
+
+        return airport.getTerminals()
+                .stream()
+                .filter(terminal -> terminal.getName().equals(terminalName))
+                .flatMap(terminal -> terminal.getFlights().stream())
+                .filter(flight -> flight.getType() == Flight.Type.ARRIVAL)
+                .filter(flight -> flight.getDate().isAfter(arriveNow))
+                .findFirst();
     }
 }
