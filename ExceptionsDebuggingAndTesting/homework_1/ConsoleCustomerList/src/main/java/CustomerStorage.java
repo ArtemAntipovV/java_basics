@@ -1,22 +1,14 @@
-import java.io.IOException;
+
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-//class MyCustomException extends RuntimeException {
-//    public MyCustomException() {
-//        super();
-//    }
-//    public MyCustomException(String message) {
-//        super(message);
-//    }
-//
-//
-//
-//}
 
 public class CustomerStorage {
+    private static final Logger log = LogManager.getLogger(CustomerStorage.class);
     private final Map<String, Customer> storage;
 
 
@@ -30,29 +22,35 @@ public class CustomerStorage {
         final int INDEX_EMAIL = 2;
         final int INDEX_PHONE = 3;
 
-//        String[] components = data.split("\\s+");
-//        String name = components[INDEX_NAME] + " " + components[INDEX_SURNAME];
-//        storage.put(name, new Customer(name, components[INDEX_PHONE], components[INDEX_EMAIL]));
-
         try {
             String[] components = data.split("\\s+");
             if (components.length != 4) {
+                log.log(Level.INFO, "Пользователь ввел неверное количество строк!");
                 throw new IllegalArgumentException("Количество слов в строке должно быть равно 4.");
             }
             String name = components[INDEX_NAME] + " " + components[INDEX_SURNAME];
-            storage.put(name, new Customer(name, components[INDEX_PHONE], components[INDEX_EMAIL]));
+            if (!isValidName(components[INDEX_NAME])) {
+                log.log(Level.INFO, "Пользователь ввел неверное имя!");
+                throw new IllegalArgumentException("Неверное имя!");
+            }
+            if (!isValidName(components[INDEX_SURNAME])) {
+                log.log(Level.INFO, "Пользователь ввел неверную фамилию!");
+                throw new IllegalArgumentException("Неверная фамилия!");
+            }
             if (!isValid(components[INDEX_EMAIL])) {
-                throw new IllegalArgumentException("Неверный email");
+                log.log(Level.INFO, "Пользователь ввел неверный email!");
+                throw new IllegalArgumentException("Неверный email!");
             }
             if (!isValidTel(components[INDEX_PHONE])) {
-                throw new IllegalArgumentException("Неверный телефон");
+                log.log(Level.INFO, "Пользователь ввел неверный телефон!");
+                throw new IllegalArgumentException("Неверный телефон!");
             }
+            storage.put(name, new Customer(name, components[INDEX_PHONE], components[INDEX_EMAIL]));
         } catch (NullPointerException e) {
             // Обработка исключений для неверного email или номера
             System.err.println("Неверный email или номер: " + e.getMessage());
         }
-}
-
+    }
 
     public void listCustomers() {
         storage.values().forEach(System.out::println);
@@ -73,13 +71,15 @@ public class CustomerStorage {
     public static boolean isValid(String email) {
         return email.matches("^[\\w-\\.]+@[\\w-]+(\\.[\\w-]+)*\\.[a-z]{2,}$");
     }
-//
+
     public static boolean isValidTel(String phone) {
         return phone.matches("^\\+?7\\d{10}$");
     }
 
-    зги
-
+    public static boolean isValidName(String name) {
+        return name.matches("^[а-яА-ЯёЁ0-9_-]{3,23}$");
     }
+
+}
 
 
