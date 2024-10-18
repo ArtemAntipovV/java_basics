@@ -1,27 +1,22 @@
-package org.example;
+package parcingWeb;
 
 
-import lombok.Data;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Data
-public class MoscowMetroStation {
 
-    private String  nameStation;
-    private String numberStation;
-
+public class MoscowMetroStationParcing {
 
     public static List<String> parseFileStation (String path) {
         try {
             Document doc = Jsoup.connect(path).get();
-            Elements stations = doc.select("p.single-station");
+            // выбираем и получаем станции и номер
+            Elements stations = doc.select("div.js-metro-stations");
             List<String> stationNumber = stations.stream()
-                    .map(station -> station.select("p.single-station").attr("spun.num")
+                    .map(station -> station.select("span.js-metro-line").attr("span.line")
                              + station.text())
                     .collect(Collectors.toList());
         return stationNumber;
