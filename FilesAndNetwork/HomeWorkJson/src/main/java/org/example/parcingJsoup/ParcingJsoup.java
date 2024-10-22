@@ -1,9 +1,7 @@
-package parcingWeb;
-
+package org.example.parcingJsoup;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
@@ -11,8 +9,24 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+public class ParcingJsoup {
 
-public class MoscowMetroStationParcing {
+    public static List<String> parseFileLine(String path) {
+        try {
+            // получаем данные о линиях
+            Document doc = Jsoup.connect(path).get();
+            // выбираем и получаем линии и номера метро
+            Elements lines = doc.select("div.js-toggle-depend");
+            List<String> linesList = lines.stream()
+                    .map(line -> line.select("span.js-metro-line").attr("data-line")
+                            + " - " + line.text())
+                    .collect(Collectors.toList());
+            return linesList;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     public static List<String> parseFileStation (String path) {
         try {
@@ -31,11 +45,28 @@ public class MoscowMetroStationParcing {
 
                     })
                     .collect(Collectors.toList());
-        return stationNumber;
+            return stationNumber;
         } catch (IOException e) {
             e.printStackTrace();
             return null;
         }
     }
+
+    public static String getHtml(String url) {
+        try {
+            Document doc = Jsoup.connect(url).get();
+            return doc.html();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }
+
+
+
+
+
+
+
 

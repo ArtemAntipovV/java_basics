@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class ParsingJson {
     @Getter
-        private Map<String, String>  stationsDepth = new HashMap<>();
+    private Map<String, String> stationsDepth = new HashMap<>();
 
     public void parcingJsonFiles(String filePath) {
         try {
@@ -22,12 +22,11 @@ public class ParsingJson {
             jsonArray.forEach(stantionObject -> {
                 JSONObject stantionJsonObject = (JSONObject) stantionObject;
                 stationsDepth.put(
-                        (String)stantionJsonObject.get("station_name"),
+                        (String) stantionJsonObject.get("station_name"),
                         ((String) stantionJsonObject.get("depth")));
             });
-            }
-         catch (Exception e) {
-           e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
     }
