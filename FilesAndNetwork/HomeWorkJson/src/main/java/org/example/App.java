@@ -50,20 +50,5 @@ public class App
         parcingCsv.parcingCsvFiles(new File("data/csv/dates-3.csv"));
 
 
-
-
-
-//        List<MoscowMetroLines> lines = ParcingWeb.getMetroLines(url);
-//        ParcingWeb.printMetroLines(lines);
-//        List<MoscowMetroStation> stations = ParcingWeb.getMetroStation(url);
-//        ParcingWeb.printMetroStation(stations);
-//        Path linesFilePath = Paths.get("lines.json");
-//        Path stationsFilePath = Paths.get("stations.json");
-//
-//        ParcingWeb.writeMetroLinesTo(lines, linesFilePath);
-//        ParcingWeb.writeMetroStationsTo(stations, stationsFilePath);
-
-
-
     }
 }
