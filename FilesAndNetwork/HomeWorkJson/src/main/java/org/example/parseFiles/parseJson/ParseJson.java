@@ -1,4 +1,4 @@
-package org.example.parcingFiles;
+package org.example.parseFiles;
 
 
 import lombok.Getter;
@@ -10,7 +10,7 @@ import java.io.FileReader;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ParsingJson {
+public class ParseJson {
     @Getter
     private Map<String, String> stationsDepth = new HashMap<>();
 

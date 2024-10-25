@@ -1,20 +1,18 @@
-package org.example.parcingFiles.parcingCvs;
+package org.example.parseFiles.parseCvs;
 
 
-import java.io.File;
-import java.io.FileReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 
-public class ParcingCsv {
+public class ParseCsv {
     private ArrayList<String> lines = new ArrayList<>();
     private Map<String, String> stantionDate = new HashMap<>();
 
-    public List<String> parcingCsvFiles(File file) {
+    public List<String> parcingCsvFiles(String path) {
         ArrayList<String> line;
         try {
-            line = (ArrayList<String>) Files.readAllLines(Paths.get(file.toURI()));
+            line = (ArrayList<String>) Files.readAllLines(Paths.get(path));
             lines.addAll(line);
         } catch (Exception ex) {
             ex.printStackTrace();
