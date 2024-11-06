@@ -20,7 +20,6 @@ import java.io.File;
             this.start = start;
         }
 
-
         @Override
         public void run() {
             try {
@@ -29,17 +28,30 @@ import java.io.File;
                     if (image == null) {
                         continue;
                     }
-
-                    BufferedImage newImage = Scalr.resize(image, newWidth);
-
-                    File newFile = new File(dstFolder + File.separator + file.getName());
+                    int newHeight = (int) Math.round(image.getHeight() / (image.getWidth() / (double) newWidth));
+                    BufferedImage newImage = resize(image, newWidth, newHeight);
+                    File newFile = new File(dstFolder + "/" + file.getName());
                     ImageIO.write(newImage, "jpg", newFile);
+                    System.out.println("Tread number: " + Thread.currentThread().getName() +
+                            " processed the file: " + file.getName());
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (Exception exception) {
+                exception.printStackTrace();
             }
-
-            System.out.println("Finished after start: " + (System.currentTimeMillis() - start));
+            System.out.println(
+                    "Tread number: " + Thread.currentThread().getName() +
+                            " processed for - " + (System.currentTimeMillis() - start) + " ms");
+        }
+        public static BufferedImage resize(BufferedImage image, int targetWidth, int targetHeight) {
+            return Scalr.resize(
+                    image,
+                    Scalr.Method.AUTOMATIC,
+                    Scalr.Mode.AUTOMATIC,
+                    targetWidth,
+                    targetHeight,
+                    Scalr.OP_ANTIALIAS);
         }
     }
+
+
 

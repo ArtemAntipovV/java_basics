@@ -15,24 +15,27 @@ public class Main {
 
         File srcDir = new File(srcFolder);
 
+        File[] files = srcDir.listFiles();
         long start = System.currentTimeMillis();
 
-        List<File> files = new ArrayList<>(List.of(srcDir.listFiles()));
-
-        divideAndProcessFiles(files, THREAD_COUNT, NEW_WIDTH, dstFolder, start);
-
-    }
-
-    private static void divideAndProcessFiles(List<File> files, int threadCount, int newWidth, String dstFolder, long start) {
-        int chunkSize = files.size() / threadCount;
-
-        for (int i = 0; i < threadCount; i++) {
-            int fromIndex = i * chunkSize;
-            int toIndex = Math.min(fromIndex + chunkSize, files.size());
-
-            List<File> sublist = files.subList(fromIndex, toIndex);
-            ImageResizer resizer = new ImageResizer(sublist.toArray(new File[0]), newWidth, dstFolder, start);
-            new Thread(resizer).start();
+        int core = Runtime.getRuntime().availableProcessors();
+        int remainder = files.length % core;
+        int size = files.length / core;
+        int srsPos = 0;
+        for (int i = 0; i < core; i++) {
+            if (i == core - 1) {
+                size += remainder;
+            }
+            File[] newFile = new File[size];
+            if (i > 0) {
+                if (i == core - 1) {
+                    srsPos -= remainder;
+                }
+                srsPos += newFile.length;
+            }
+            System.arraycopy(files, srsPos, newFile, 0, newFile.length);
+            new Thread(new ImageResizer(newFile, NEW_WIDTH, dstFolder, start)).start();
         }
     }
+
 }
