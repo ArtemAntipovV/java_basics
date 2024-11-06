@@ -38,9 +38,7 @@ import java.io.File;
             } catch (Exception exception) {
                 exception.printStackTrace();
             }
-            System.out.println(
-                    "Tread number: " + Thread.currentThread().getName() +
-                            " processed for - " + (System.currentTimeMillis() - start) + " ms");
+            System.out.println("Processed for - " + (System.currentTimeMillis() - start) + " ms");
         }
         public static BufferedImage resize(BufferedImage image, int targetWidth, int targetHeight) {
             return Scalr.resize(
