@@ -6,7 +6,6 @@ import java.util.List;
 
 public class Main {
 
-    private static final int THREAD_COUNT = 6;
     private static final int NEW_WIDTH = 300;
 
     public static void main(String[] args) {
