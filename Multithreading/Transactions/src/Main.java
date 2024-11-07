@@ -46,15 +46,5 @@ public class Main {
         System.out.println("Финальный баланс клиента 2: " + bank.getBalance("234"));
 
 
-//        try {
-//            bank.transfer("123", "234", 50000);
-//            bank.transfer("234", "123", 10000);
-//            bank.transfer("567", "890", 50000);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        System.out.println("Новый баланс клиента 1: " + bank.getBalance("123"));
-//        System.out.println("Новый баланс клиента 2: " + bank.getBalance("234"));
-//        System.out.println("Новый баланс клиента 3: " + bank.getBalance("567"));
     }
 }
