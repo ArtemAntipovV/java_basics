@@ -15,7 +15,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import javax.imageio.IIOException;
 
 public class ParsingWeb extends RecursiveTask<List<Link>> {
 
@@ -53,7 +52,7 @@ public class ParsingWeb extends RecursiveTask<List<Link>> {
             try {
                 linkList.addAll(future.get());
             } catch (ExecutionException | InterruptedException e) {
-                e.printStackTrace(); // Обрабатываем исключения
+                e.printStackTrace();
             }
         }
 
@@ -68,7 +67,7 @@ public class ParsingWeb extends RecursiveTask<List<Link>> {
             PrintWriter printWriter = new PrintWriter(writer);
 
             for (Link link : links) {
-                sb.append("\t".repeat(link.getLevel())) // Добавляем отступы
+                sb.append("\t".repeat(link.getLevel()))
                         .append(link.getNameLink())
                         .append("\n");
             }
