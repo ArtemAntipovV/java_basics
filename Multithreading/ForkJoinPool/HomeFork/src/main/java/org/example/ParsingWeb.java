@@ -18,7 +18,6 @@ import org.jsoup.select.Elements;
 
 public class ParsingWeb extends RecursiveTask<List<Link>> {
 
-
     private final List<Link> linkList = Collections.synchronizedList(new ArrayList<>());
     private  String startUrl;
     private static Set<String> visitedUrls = ConcurrentHashMap.newKeySet();
@@ -26,8 +25,8 @@ public class ParsingWeb extends RecursiveTask<List<Link>> {
 
     public ParsingWeb(String startUrl) {
         this.startUrl = startUrl;
-
     }
+
     @Override
     protected List<Link> compute() {
             int linkLevel = 1;
@@ -55,10 +54,8 @@ public class ParsingWeb extends RecursiveTask<List<Link>> {
                 e.printStackTrace();
             }
         }
-
         return linkList;
         }
-
 
     public void writeResults(List<Link> links) {
         StringBuilder sb = new StringBuilder();
@@ -78,8 +75,6 @@ public class ParsingWeb extends RecursiveTask<List<Link>> {
             System.err.println("Ошибка записи в файл: " + e.getMessage());
             throw new RuntimeException(e);
         }
-
-
     }
 
     private Elements getElements() {
