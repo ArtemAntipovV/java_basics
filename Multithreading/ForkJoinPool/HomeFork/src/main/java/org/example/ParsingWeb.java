@@ -1,71 +1,103 @@
 package org.example;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.HashSet;
+
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.RecursiveAction;
+import java.util.concurrent.*;
 
-import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-public class ParsingWeb extends RecursiveAction {
-    private static final int MAX_DEPTH = 10; // Максимальная глубина обхода
-    private static final int TIMEOUT_MILLIS = 30_000;
+import javax.imageio.IIOException;
+
+public class ParsingWeb extends RecursiveTask<List<Link>> {
 
 
-    private final String startUrl;
-    private Set<String> visitedUrls = new HashSet<>();
-    private final int depth;
-    private PrintWriter writer;
+    private final List<Link> linkList = Collections.synchronizedList(new ArrayList<>());
+    private  String startUrl;
+    private static Set<String> visitedUrls = ConcurrentHashMap.newKeySet();
+    private  List<ParsingWeb> taskList = Collections.synchronizedList(new ArrayList<>());
 
-    public ParsingWeb(String startUrl, Set<String> visitedUrls, int depth, PrintWriter writer) {
+    public ParsingWeb(String startUrl) {
         this.startUrl = startUrl;
-        this.visitedUrls = visitedUrls;
-        this.depth = depth;
-        this.writer = writer;
-    }
 
+    }
     @Override
-    protected void compute() {
-        if (depth > MAX_DEPTH || startUrl == null) {
-            return;
+    protected List<Link> compute() {
+            int linkLevel = 1;
+        for (Element element : getElements()) {
+            String linkUrl = element.absUrl("href");
+            if (linkUrl.startsWith(startUrl) && !visitedUrls.contains(linkUrl) &&
+                    !linkUrl.contains("#") && !linkUrl.endsWith(".pdf") && !linkUrl.equals("/")) {
+                visitedUrls.add(linkUrl);
+                linkList.add(new Link(linkUrl, linkLevel));
+                ParsingWeb task = new ParsingWeb(linkUrl);
+                taskList.add(task);
+                task.fork();
+                linkLevel++;
+            }
+            }
+        List<Future<List<Link>>> futures = new ArrayList<>();
+        for (ParsingWeb task : taskList) {
+            futures.add(ForkJoinPool.commonPool().submit(task));
         }
 
+        for (Future<List<Link>> future : futures) {
+            try {
+                linkList.addAll(future.get());
+            } catch (ExecutionException | InterruptedException e) {
+                e.printStackTrace(); // Обрабатываем исключения
+            }
+        }
+
+        return linkList;
+        }
+
+
+    public void writeResults(List<Link> links) {
+        StringBuilder sb = new StringBuilder();
         try {
-            Thread.sleep(150);
-            Connection connection = Jsoup.connect(startUrl)
-                    .timeout(TIMEOUT_MILLIS)
-                    .userAgent("Mozilla");
+            FileWriter writer = new FileWriter("HomeFork/results.txt", true);
+            PrintWriter printWriter = new PrintWriter(writer);
 
-            Document document = connection.get();
-            Elements links = document.select("a[href]");
-
-            List<ParsingWeb> tasks = new ArrayList<>();
-            for (Element link : links) {
-                String absHref = link.absUrl("href");
-                if (!visitedUrls.contains(absHref) && absHref.startsWith(startUrl)) {
-                    visitedUrls.add(absHref);
-                    writeToFile(depth, absHref);
-                    tasks.add(new ParsingWeb(absHref, visitedUrls, depth + 1, writer));
-                }
+            for (Link link : links) {
+                sb.append("\t".repeat(link.getLevel())) // Добавляем отступы
+                        .append(link.getNameLink())
+                        .append("\n");
             }
 
-            invokeAll(tasks);
-        } catch (Exception e) {
-            e.printStackTrace();
+            printWriter.print(sb.toString());
+            printWriter.close();
+        } catch (IOException e) {
+            System.err.println("Ошибка записи в файл: " + e.getMessage());
+            throw new RuntimeException(e);
         }
+
+
     }
 
-    private void writeToFile(int depth, String url) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < depth; i++) {
-            sb.append("\t");
+    private Elements getElements() {
+        Elements elements;
+        Document doc;
+        try {
+            doc = Jsoup.connect(startUrl)
+                    .ignoreHttpErrors(true)
+                    .ignoreContentType(true)
+                    .maxBodySize(0)
+                    .timeout(10_000)
+                    .get();
+            elements = doc.select("a[href]");
+        } catch (IOException e) {
+            System.err.println("Не удалось получить документ: " + startUrl);
+            throw new RuntimeException(e);
         }
-        writer.write(sb + url + "\n");
+        return elements;
     }
 }
