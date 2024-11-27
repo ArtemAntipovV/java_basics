@@ -5,9 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
 import java.time.LocalDateTime;
-import java.util.Date;
+
 
 @NoArgsConstructor
 @Getter
@@ -18,5 +17,7 @@ public class NewsDto {
     private String title;
     private String text;
     private LocalDateTime date;
+
+    private CategoryDto category;
 
 }

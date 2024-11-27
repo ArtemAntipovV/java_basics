@@ -2,17 +2,13 @@ package com.example.springexample.service;
 
 import com.example.springexample.dto.NewsDto;
 import com.example.springexample.enity.News;
+import com.example.springexample.repositories.CategoryRepository;
 import com.example.springexample.repositories.NewsRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
 import java.util.Collection;
-import java.util.Date;
-import java.util.concurrent.ConcurrentHashMap;
+
 
 
 @RequiredArgsConstructor
@@ -21,8 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class NewsCRUDService implements CRUDService<NewsDto> {
 
     private final NewsRepository newsRepository;
-    private final ConcurrentHashMap<Long, NewsDto> news = new ConcurrentHashMap<>();
-
+    private final CategoryRepository categoryRepository;
 
     @Override
     public NewsDto getById(Long id) {
@@ -40,18 +35,16 @@ public class NewsCRUDService implements CRUDService<NewsDto> {
     }
 
     @Override
-    public void create(NewsDto item) {
+    public void create(NewsDto newsDto) {
         log.info("Create");
-        News news = mapToEntity(item);
+        News news = mapToEntity(newsDto);
         newsRepository.save(news);
     }
 
-
-
     @Override
-    public void update(NewsDto item) {
+    public void update(NewsDto newsDto) {
         log.info("Update");
-        News news = mapToEntity(item);
+        News news = mapToEntity(newsDto);
         newsRepository.save(news);
     }
 
@@ -66,7 +59,7 @@ public class NewsCRUDService implements CRUDService<NewsDto> {
         newsDto.setTitle(news.getTitle());
         newsDto.setText(news.getText());
         newsDto.setDate(news.getDate());
-
+        newsDto.setCategory(CategoryCRUDService.mapToDto(news.getCategory()));
         return newsDto;
 
     }
@@ -77,9 +70,8 @@ public class NewsCRUDService implements CRUDService<NewsDto> {
         news.setTitle(newsDto.getTitle());
         news.setText(newsDto.getText());
         news.setDate(newsDto.getDate());
-
+        news.setCategory(CategoryCRUDService.mapToEntity(newsDto.getCategory()));
         return news;
     }
-
 
 }

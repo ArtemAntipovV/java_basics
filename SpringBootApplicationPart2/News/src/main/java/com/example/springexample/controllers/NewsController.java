@@ -6,11 +6,8 @@ import com.example.springexample.service.NewsCRUDService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Collection;
-import java.util.Date;
+
 
 @RestController
 @RequestMapping("/api/news")

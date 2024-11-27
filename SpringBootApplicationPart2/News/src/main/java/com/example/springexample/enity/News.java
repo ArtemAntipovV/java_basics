@@ -7,7 +7,7 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.Date;
+
 
 @Getter
 @Setter
@@ -30,6 +30,9 @@ public class News {
     @Column(name= "date")
     private LocalDateTime date;
 
+    @ManyToOne
+    @JoinColumn(name= "category_id", nullable = false)
+    private Category category;
 
 
 }
