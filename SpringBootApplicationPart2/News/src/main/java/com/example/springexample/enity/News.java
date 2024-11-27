@@ -28,7 +28,7 @@ public class News {
 
     @CreationTimestamp
     @Column(name= "date")
-    private Date date;
+    private LocalDateTime date;
 
 
 

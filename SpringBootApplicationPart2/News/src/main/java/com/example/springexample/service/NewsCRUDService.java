@@ -65,12 +65,8 @@ public class NewsCRUDService implements CRUDService<NewsDto> {
         newsDto.setId(news.getId());
         newsDto.setTitle(news.getTitle());
         newsDto.setText(news.getText());
-        Date date = news.getDate();
-        if (date != null) {
-            OffsetDateTime offsetDateTime = date.toInstant().atOffset(ZoneOffset.UTC);
-            String isoDate = offsetDateTime.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-            newsDto.setDate(isoDate);
-        }
+        newsDto.setDate(news.getDate());
+
         return newsDto;
 
     }
@@ -80,11 +76,8 @@ public class NewsCRUDService implements CRUDService<NewsDto> {
         news.setId(newsDto.getId());
         news.setTitle(newsDto.getTitle());
         news.setText(newsDto.getText());
-        String isoDate = newsDto.getDate();
-        if (isoDate != null) {
-            OffsetDateTime offsetDateTime = OffsetDateTime.parse(isoDate, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-            news.setDate(Date.from(offsetDateTime.toInstant()));
-        }
+        news.setDate(newsDto.getDate());
+
         return news;
     }
 
