@@ -2,12 +2,9 @@ package com.example.springexample.controllers;
 
 
 import com.example.springexample.dto.CategoryDto;
-import com.example.springexample.repositories.CategoryRepository;
 import com.example.springexample.service.CategoryCRUDService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;

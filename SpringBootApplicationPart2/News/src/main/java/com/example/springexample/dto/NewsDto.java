@@ -1,7 +1,6 @@
 package com.example.springexample.dto;
 
-import com.example.springexample.enity.Category;
-import lombok.Data;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

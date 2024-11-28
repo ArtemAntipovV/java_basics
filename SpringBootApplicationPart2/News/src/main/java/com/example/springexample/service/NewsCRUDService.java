@@ -1,6 +1,6 @@
 package com.example.springexample.service;
 
-import com.example.springexample.dto.CategoryDto;
+
 import com.example.springexample.dto.NewsDto;
 import com.example.springexample.enity.Category;
 import com.example.springexample.enity.News;
@@ -94,7 +94,6 @@ public class NewsCRUDService implements CRUDService<NewsDto> {
             throw new RuntimeException("Найдено несколько категорий с названием '" + categoryName + "'.");
         }
 
-        // Обновляем данные новости
         existingNews.setTitle(newsDto.getTitle());
         existingNews.setText(newsDto.getText());
         existingNews.setCategory(category);
