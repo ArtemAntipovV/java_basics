@@ -1,14 +1,17 @@
 package com.example.springexample.service;
 
+import com.example.springexample.dto.CategoryDto;
 import com.example.springexample.dto.NewsDto;
+import com.example.springexample.enity.Category;
 import com.example.springexample.enity.News;
 import com.example.springexample.repositories.CategoryRepository;
 import com.example.springexample.repositories.NewsRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import java.util.Collection;
-
+import java.util.List;
 
 
 @RequiredArgsConstructor
@@ -18,6 +21,17 @@ public class NewsCRUDService implements CRUDService<NewsDto> {
 
     private final NewsRepository newsRepository;
     private final CategoryRepository categoryRepository;
+
+
+    public Collection<NewsDto> getNewsByCategoryId(Long categoryId) {
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new EntityNotFoundException("Category not found"));
+
+        List<News> newsList = newsRepository.findByCategory(category);
+        return newsList.stream()
+                .map(NewsCRUDService::mapToDto)
+                .toList();
+    }
 
     @Override
     public NewsDto getById(Long id) {
@@ -37,15 +51,55 @@ public class NewsCRUDService implements CRUDService<NewsDto> {
     @Override
     public void create(NewsDto newsDto) {
         log.info("Create");
+
         News news = mapToEntity(newsDto);
+        String categoryName = newsDto.getCategory(); // Получение названия категории
+
+        List<Category> categories = categoryRepository.findByTitle(categoryName);
+
+        Category category;
+
+        if (categories.size() == 1) {
+            category = categories.get(0);
+        } else if (categories.isEmpty()) {
+            // Создаем новую категорию
+            category = new Category();
+            category.setTitle(categoryName);
+            category = categoryRepository.save(category);
+        } else {
+            throw new RuntimeException("Найдено несколько категорий с названием '" + categoryName + "'.");
+        }
+        news.setCategory(category);
         newsRepository.save(news);
     }
 
     @Override
     public void update(NewsDto newsDto) {
-        log.info("Update");
-        News news = mapToEntity(newsDto);
-        newsRepository.save(news);
+
+        News existingNews = newsRepository.findById(newsDto.getId())
+                .orElseThrow(() -> new EntityNotFoundException("News not found"));
+
+        String categoryName = newsDto.getCategory();
+        List<Category> categories = categoryRepository.findByTitle(categoryName);
+
+        Category category;
+
+        if (categories.size() == 1) {
+            category = categories.get(0);
+        } else if (categories.isEmpty()) {
+            category = new Category();
+            category.setTitle(categoryName);
+            category = categoryRepository.save(category);
+        } else {
+            throw new RuntimeException("Найдено несколько категорий с названием '" + categoryName + "'.");
+        }
+
+        // Обновляем данные новости
+        existingNews.setTitle(newsDto.getTitle());
+        existingNews.setText(newsDto.getText());
+        existingNews.setCategory(category);
+
+        newsRepository.save(existingNews);
     }
 
     @Override
@@ -59,9 +113,10 @@ public class NewsCRUDService implements CRUDService<NewsDto> {
         newsDto.setTitle(news.getTitle());
         newsDto.setText(news.getText());
         newsDto.setDate(news.getDate());
-        newsDto.setCategory(CategoryCRUDService.mapToDto(news.getCategory()));
-        return newsDto;
-
+        if (news.getCategory() != null) {
+            newsDto.setCategory(news.getCategory().getTitle());
+        }
+      return newsDto;
     }
 
     public static News mapToEntity (NewsDto newsDto) {
@@ -70,7 +125,6 @@ public class NewsCRUDService implements CRUDService<NewsDto> {
         news.setTitle(newsDto.getTitle());
         news.setText(newsDto.getText());
         news.setDate(newsDto.getDate());
-        news.setCategory(CategoryCRUDService.mapToEntity(newsDto.getCategory()));
         return news;
     }
 

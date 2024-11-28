@@ -1,15 +1,13 @@
 package com.example.springexample.dto;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
-@AllArgsConstructor
+@Getter
+@Setter
 @NoArgsConstructor
 public class CategoryDto {
 
@@ -17,6 +15,6 @@ public class CategoryDto {
 
     private String title;
 
-    private List<NewsDto> news = new ArrayList<>();
+   private List<NewsDto> news = new ArrayList<>();
 
 }

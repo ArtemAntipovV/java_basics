@@ -1,5 +1,6 @@
 package com.example.springexample.dto;
 
+import com.example.springexample.enity.Category;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,9 @@ public class NewsDto {
     private String text;
     private LocalDateTime date;
 
-    private CategoryDto category;
+    private String category;
 
-}
+
+
+    }
+

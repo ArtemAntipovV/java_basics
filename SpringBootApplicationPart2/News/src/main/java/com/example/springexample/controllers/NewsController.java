@@ -40,7 +40,6 @@ public class NewsController {
     @PostMapping()
     public void createNews(@RequestBody NewsDto newsDto) {
         newsService.create(newsDto);
-
     }
 
     @PutMapping("/{id}")
@@ -50,8 +49,12 @@ public class NewsController {
 
     @DeleteMapping("/{id}")
     public void deleteNews(@PathVariable Long id) {
-
         newsService.delete(id);
+    }
 
+    @GetMapping("category/{id}")
+    public ResponseEntity<Collection<NewsDto>> getNewsByCategoryId(@PathVariable Long id) {
+        Collection<NewsDto> newsDtos = newsService.getNewsByCategoryId(id);
+        return new ResponseEntity<>(newsDtos, HttpStatus.OK);
     }
 }
